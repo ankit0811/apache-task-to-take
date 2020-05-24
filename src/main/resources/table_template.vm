@@ -1,0 +1,81 @@
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="./table.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+    <style>
+        a:link {
+          text-decoration: none;
+        }
+
+        a:visited {
+          text-decoration: none;
+        }
+
+        a:hover {
+          text-decoration: underline;
+        }
+
+        a:active {
+          text-decoration: underline;
+        }
+        th, a {
+            font-family: Arial;
+        }
+        td, p, label, div {
+            font-family: Arial; font-size: 10pt;
+        }
+    </style>
+    </head>
+    <div>
+    <p>This file was last refreshed on: $refreshDate</p>
+    </div>
+
+    <table id="issueTable" class="hover" style="width:100%">
+        <thead>
+        <tr>
+            <th>Sr #</th>
+            <th>Repository Name</th>
+            <th>Language</th>
+            <th>Label</th>
+            <th>Issue #</th>
+            <!--<th>Issue API</th>-->
+            <th>Title</th>
+            <th>Comment Count</th>
+            <th>Reported By</th>
+            <th>Create Dt</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        #set($count = 0)
+        #foreach ($repository in $repositories)
+          #foreach ($key in $repository.getConcernedIssues().keySet())
+            #foreach ($issue in $repository.getConcernedIssues().get($key))
+            #set($count = ${count} + 1)
+            <tr>
+                <td>${count}</td>
+                <td> <a href="$repository.getHtml_url()"> $repository.getName() </a> </td>
+                <td> $repository.getLanguage() </td>
+                #set($a = "")
+                #set($b = 2)
+                #foreach( $label in $issue.getLabels())
+                  #set($a = $a + "<a href=$label.getUrl()>" + $label.getName() + "</a>, ")
+                #end
+                #set($subs = ${a.length()} -${b})
+                #set($a = $a.substring(0, $subs))
+                <td>${a}</td>
+                <td><a href="$issue.getHtml_url()">$issue.getNumber()</a></td>
+                <!--<td> <a href="$issue.getUrl()">$issue.getNumber()</a></td>-->
+                <td>$issue.getTitle()</td>
+                <td>$issue.getComments()</td>
+                <td> <a href = "$issue.getUser().getHtml_url()"> $issue.getUser().getLogin() </a></td>
+                <td>$issue.getCreated_at()</td>
+            </tr>
+            #end
+          #end
+        #end
+        </tbody>
+    </table>
+</html>
