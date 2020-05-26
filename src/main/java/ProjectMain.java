@@ -1,6 +1,8 @@
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.runtime.RuntimeConstants;
+import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -18,13 +20,19 @@ import java.util.logging.Logger;
 public class ProjectMain
 {
   private static final Logger LOG = Logger.getLogger(ProjectMain.class.getName());
+  private static final Config cfg = new Config();
   private static final VelocityEngine ve = new VelocityEngine();
+
+  private static final String TARGET_FILE_KEY = "TARGET_FILE";
+  private static final String TARGET_FILE = cfg.getProperty(TARGET_FILE_KEY);
 
   public static void generateHTML(ExtractGitHubIssues extractGitHubIssues) throws IOException
   {
+    ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
+    ve.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
     ve.init();
 
-    Template t = ve.getTemplate("./src/main/resources/table_template.vm" );
+    Template t = ve.getTemplate("table_template.vm" );
 
     VelocityContext context = new VelocityContext();
 
@@ -33,17 +41,20 @@ public class ProjectMain
     StringWriter writer = new StringWriter();
     t.merge(context, writer);
 
-    LOG.info("Generating HTML file. Pls check resources for table_template.html file");
+    LOG.info(String.format("Generating HTML file. Pls check %s file", TARGET_FILE));
 
     FileWriter fwriter =
-        new FileWriter("./src/main/resources/table_template.html", false);
+        new FileWriter(TARGET_FILE, false);
     fwriter.write(writer.toString());
     fwriter.close();
 
   }
 
-  public static void main(String[] args) throws IOException
+  public static void main(String[] args) throws Exception
   {
+    if (TARGET_FILE.length() < 1) {
+      throw new Exception("TARGET_FILE missing in config.properties file. Pls set a valid value for the same.");
+    }
     ExtractGitHubIssues extractGitHubIssues = new ExtractGitHubIssues();
     extractGitHubIssues.setRepositories(ExtractGitHubIssues.GIT_END_POINT_FOR_REPO_WITH_PAGE_NUMBER, 1, true);
     try {

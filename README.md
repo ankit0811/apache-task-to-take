@@ -20,9 +20,42 @@ to generate a simple html table with sort and search feature listing all the ope
     3. repos interested in (key words) `FILTER_REPO=`
     4. issue labels in (key words). `FILTER_LABEL=start,first,begin,contribution`
     
-    _**Note**: Make sure to provide username and password in this config file as the same is required to access git apis (to avoid rate limit)_
+    _**Note**: Make sure to provide `username:password` in this config file as it is required to access git apis (to avoid rate limit)_
     
-3. Using velocity template we then generate the [html file](https://github.com/ankit0811/apache-task-to-take/blob/master/src/main/resources/sample_table_template.html) in resources
+3. Using velocity template we then generate the [html file](beginner_table.html) in resources
+
+## Steps to execute
+
+#### Using terminal
+1. Clone the repo.
+```bash
+git clone git@github.com:ankit0811/apache-task-to-take.git
+```
+2. Go to the root directory of this repo.
+```bash
+cd apache-task-to-take
+```
+3. Build the repo using the following command.
+```bash
+mvn clean install
+```
+4. Make sure to modify the file `config.properties.sample` to add your Git username and password
+and then run the following command.
+```bash
+ java -Dconfig="config.properties.sample" -cp target/apache-task-to-take-1.0-SNAPSHOT-jar-with-dependencies.jar ProjectMain
+```
+5. This will generate the target html.
+ The target location is configurable via `config.properties.sample` file.  
+
+#### Using IDE 
+1. Once you have checkout the repo, open the project in your choice of IDE
+
+2. Make sure to modify the `config.properties` file in resources folder to add `username:password`
+
+3. Run `ProjectMain.class`.
+ This will generate the target html.
+ The target location is configurable via `config.properties` file. 
+
 
 
 

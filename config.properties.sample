@@ -17,7 +17,7 @@ USER_PASS=
 
 ########## Filter lists start from here. All the filters support multi value (OR operation)
 # filter for interested repo. Comma separated string
-FILTER_REPO=
+FILTER_REPO=airflow
 # ignore repos that you are not interested in
 IGNORE_REPO=sling
 # list of language filters if any
@@ -26,6 +26,6 @@ FILTER_REPO_LANGUAGE=java,python
 FILTER_LABEL=start,first,begin,contribution
 
 # target html file path and name
-TARGET_FILE=table_template.html
+TARGET_FILE=beginner_table.html
 
 
