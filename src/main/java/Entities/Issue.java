@@ -1,7 +1,7 @@
 package Entities;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import java.util.Arrays;
+import static org.apache.commons.lang.StringEscapeUtils.escapeHtml;
 
 public class Issue
 {
@@ -27,6 +27,7 @@ public class Issue
   private String updated_at;
   private String closed_at;
   private String author_association;
+  private Boolean draft;
   private PullRequest pull_request;
   private String body;
   private Integer score;
@@ -123,7 +124,7 @@ public class Issue
 
   public String getTitle()
   {
-    return title;
+    return escapeHtml(title);
   }
 
   public void setTitle(String title)
@@ -251,6 +252,16 @@ public class Issue
     this.author_association = author_association;
   }
 
+  public Boolean getDraft()
+  {
+    return draft;
+  }
+
+  public void setDraft(Boolean draft)
+  {
+    this.draft = draft;
+  }
+
   public PullRequest getPull_request()
   {
     return pull_request;
@@ -263,7 +274,7 @@ public class Issue
 
   public String getBody()
   {
-    return StringEscapeUtils.escapeHtml(body);
+    return escapeHtml(body);
   }
 
   public void setBody(String body)
